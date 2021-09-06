@@ -10,6 +10,14 @@ module Kcl
         @shutdown_reason     = shutdown_reason
         @record_checkpointer = record_checkpointer
       end
+
+      def terminated?
+        shutdown_reason == Kcl::Workers::ShutdownReason::TERMINATE
+      end
+
+      def requested?
+        shutdown_reason == Kcl::Workers::ShutdownReason::REQUESTED
+      end
     end
   end
 end
