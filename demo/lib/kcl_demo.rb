@@ -6,22 +6,18 @@ require_relative './kcl_demo/demo_record_processor_factory'
 
 module KclDemo
   class App
-    def self.initialize
-      Kcl.configure do |config|
-        config.dynamodb_endpoint = 'https://localhost:4566'
-        config.dynamodb_table_name = 'kcl-rb-demo'
-        config.kinesis_endpoint = 'https://localhost:4566'
-        config.kinesis_stream_name = 'kcl-rb-demo'
-      end
-    end
-
     def self.config
-      Kcl.config
+      @config ||= Kcl::Config.new(
+        dynamodb_endpoint: 'https://localhost:4566',
+        dynamodb_table_name: 'kcl-rb-demo',
+        kinesis_endpoint: 'https://localhost:4566',
+        kinesis_stream_name: 'kcl-rb-demo',
+      )
     end
 
     def self.run
       factory = KclDemo::DemoRecordProcessorFactory.new
-      Kcl::Worker.run('kcl-demo', factory)
+      Kcl::Worker.run('kcl-demo', factory, config)
     end
 
     def self.seed(record_count = 1000)

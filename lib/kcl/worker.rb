@@ -5,13 +5,16 @@ module Kcl
   class Worker
     PROCESS_INTERVAL = 2 # by sec
 
-    def self.run(id, record_processor_factory)
-      worker = self.new(id, record_processor_factory)
+    def self.run(id, record_processor_factory, config)
+      worker = self.new(id, record_processor_factory, config)
       worker.start
     end
 
-    def initialize(id, record_processor_factory)
+    attr_reader :config
+
+    def initialize(id, record_processor_factory, config)
       @id = id
+      @config = config
       @record_processor_factory = record_processor_factory
       @live_shards  = {} # Map<String, Boolean>
       @shards = {} # Map<String, Kcl::Workers::ShardInfo>
@@ -196,7 +199,7 @@ module Kcl
 
     def kinesis
       if @kinesis.nil?
-        @kinesis = Kcl::Proxies::KinesisProxy.new(Kcl.config)
+        @kinesis = Kcl::Proxies::KinesisProxy.new(config)
         Kcl.logger.info(message: "Created Kinesis session in worker")
       end
       @kinesis
@@ -204,7 +207,7 @@ module Kcl
 
     def checkpointer
       if @checkpointer.nil?
-        @checkpointer = Kcl::Checkpointer.new(Kcl.config)
+        @checkpointer = Kcl::Checkpointer.new(config)
         Kcl.logger.info(message: "Created Checkpoint in worker")
       end
       @checkpointer

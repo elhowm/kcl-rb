@@ -1,5 +1,5 @@
 RSpec.shared_context 'use_kinesis' do
-  let(:kinesis) { Kcl::Proxies::KinesisProxy.new(Kcl.config) }
+  let(:kinesis) { Kcl::Proxies::KinesisProxy.new(KclTestHelper.config) }
   let(:kinesis_shards) { kinesis.shards }
   let(:shard_shadow) do
     Kcl::Workers::ShardInfo.new(

@@ -6,12 +6,10 @@ require_relative './lib/kcl_demo'
 
 task :default => :run
 task :run do
-  KclDemo::App.initialize
   KclDemo::App.run
 end
 
 task :seed do
-  KclDemo::App.initialize
   record_count = Integer(ENV['RECORD_COUNT'] ||0)
   if record_count.zero?
     puts 'Set over 1 for RECORD_COUNT'
@@ -21,8 +19,6 @@ task :seed do
 end
 
 task :debug do
-  KclDemo::App.initialize
-
   kinesis = Kcl::Proxies::KinesisProxy.new(KclDemo::App.config)
   dynamodb = Kcl::Proxies::DynamoDbProxy.new(KclDemo::App.config)
   # rubocop:disable Lint/Debugger

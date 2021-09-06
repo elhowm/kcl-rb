@@ -8,10 +8,11 @@ module Kcl
     DYNAMO_DB_CHECKPOINT_SEQUENCE_NUMBER_KEY = 'checkpoint'.freeze
     DYNAMO_DB_PARENT_SHARD_KEY  = 'parent_shard_id'.freeze
 
-    attr_reader :dynamodb
+    attr_reader :dynamodb, :config
 
     # @param [Kcl::Config] config
     def initialize(config)
+      @config = config
       @dynamodb = Kcl::Proxies::DynamoDbProxy.new(config)
       @table_name = config.dynamodb_table_name
 
@@ -89,7 +90,7 @@ module Kcl
     # @return [Kcl::Workers::ShardInfo]
     def lease(shard, next_assigned_to)
       now = Time.now.utc
-      next_lease_timeout = now + Kcl.config.dynamodb_failover_seconds
+      next_lease_timeout = now + config.dynamodb_failover_seconds
 
       checkpoint = @dynamodb.get_item(
         @table_name,

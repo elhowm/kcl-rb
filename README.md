@@ -65,12 +65,12 @@ end
 ### Initialize KCL configurations
 
 ```rb
-Kcl.configure do |config|
-  config.dynamodb_endpoint = 'https://localhost:4566'
-  config.dynamodb_table_name = 'kcl-rb'
-  config.kinesis_endpoint = 'https://localhost:4566'
-  config.kinesis_stream_name = 'kcl-rb'
-end
+config = Kcl::Config.new(
+  dynamodb_endpoint: 'https://localhost:4566',
+  dynamodb_table_name: 'kcl-rb-demo',
+  kinesis_endpoint: 'https://localhost:4566',
+  kinesis_stream_name: 'kcl-rb-demo',
+)
 ```
 
 If you want to see all the setting items, please see [config class file](https://github.com/waka/kcl-rb/blob/master/lib/kcl/config.rb).
@@ -80,7 +80,8 @@ If you want to see all the setting items, please see [config class file](https:/
 ```rb
 worker_id = 'kcl-worker'
 factory = RecordProcessorFactory.new
-Kcl::Worker.run(worker_id, factory)
+config = Kcl::Config.new(...)
+Kcl::Worker.run(worker_id, factory, config)
 ```
 
 If you want more concrete example, look under [the demo directory](https://github.com/waka/kcl-rb/tree/master/demo).

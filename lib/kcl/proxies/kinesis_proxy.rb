@@ -3,9 +3,10 @@ require 'aws-sdk-kinesis'
 module Kcl
   module Proxies
     class KinesisProxy
-      attr_reader :client
+      attr_reader :client, :config
 
       def initialize(config)
+        @config = config
         @client = Aws::Kinesis::Client.new(
           {
             endpoint: config.kinesis_endpoint
@@ -39,7 +40,7 @@ module Kcl
       # @param [String] shard_iterator
       # @return [Hash]
       def get_records(shard_iterator)
-        res = @client.get_records({ shard_iterator: shard_iterator, limit: Kcl.config.max_records })
+        res = @client.get_records({ shard_iterator: shard_iterator, limit: config.max_records })
         { records: res.records, next_shard_iterator: res.next_shard_iterator }
       end
 

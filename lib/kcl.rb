@@ -19,19 +19,11 @@ require 'kcl/workers/shard_info'
 require 'kcl/workers/shutdown_reason'
 
 module Kcl
-  def self.configure
-    yield config
-  end
-
-  def self.config
-    @_config ||= Kcl::Config.new
-  end
-
   def self.logger
-    @_logger ||= begin
-      kcl_logger = config.logger || Kcl::Logger.new($stdout)
-      kcl_logger.formatter = Kcl::LogFormatter.new
-      kcl_logger
-    end
+    @_logger ||= Kcl::Logger.new($stdout)
+  end
+
+  def self.logger=(value)
+    @_logger = value
   end
 end

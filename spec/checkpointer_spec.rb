@@ -3,12 +3,14 @@ require 'spec_helper'
 RSpec.describe Kcl::Checkpointer do
   include_context 'use_kinesis'
 
-  let(:checkpointer) { Kcl::Checkpointer.new(Kcl.config) }
+  let(:checkpointer) { Kcl::Checkpointer.new(KclTestHelper.config) }
 
   describe '#initialize' do
     it 'exists dynamodb table' do
       dynamodb = checkpointer.dynamodb
-      expect(dynamodb.exists?(Kcl.config.dynamodb_table_name)).to be_truthy
+      expect(
+        dynamodb.exists?(KclTestHelper.config.dynamodb_table_name)
+      ).to be_truthy
     end
   end
 
@@ -26,7 +28,8 @@ RSpec.describe Kcl::Checkpointer do
     before do
       shard.checkpoint = Kcl::Checkpoints::Sentinel::SHARD_END
       shard.assigned_to = 'test-worker'
-      shard.lease_timeout = Time.now.utc + Kcl.config.dynamodb_failover_seconds
+      shard.lease_timeout =
+        Time.now.utc + KclTestHelper.config.dynamodb_failover_seconds
       checkpointer.update_checkpoint(shard)
     end
 
