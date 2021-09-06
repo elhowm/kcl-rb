@@ -9,7 +9,9 @@ module Kcl
         @config = config
         @client = Aws::Kinesis::Client.new(
           {
-            endpoint: config.kinesis_endpoint
+            endpoint: config.kinesis_endpoint,
+            credentials: config.credentials,
+            ssl_verify_peer: config.use_ssl
           }.compact
         )
         @stream_name = config.kinesis_stream_name

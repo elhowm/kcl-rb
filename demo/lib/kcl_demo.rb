@@ -12,6 +12,10 @@ module KclDemo
         dynamodb_table_name: 'kcl-rb-demo',
         kinesis_endpoint: 'https://localhost:4566',
         kinesis_stream_name: 'kcl-rb-demo',
+        credentials: Aws::Credentials.new(
+          'dummy', 'dummy'
+        ),
+        use_ssl: false
       )
     end
 

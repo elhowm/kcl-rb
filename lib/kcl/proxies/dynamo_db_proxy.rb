@@ -8,7 +8,9 @@ module Kcl
       def initialize(config)
         @client = Aws::DynamoDB::Client.new(
           {
-            endpoint: config.dynamodb_endpoint
+            endpoint: config.dynamodb_endpoint,
+            credentials: config.credentials,
+            ssl_verify_peer: config.use_ssl
           }.compact
         )
       end

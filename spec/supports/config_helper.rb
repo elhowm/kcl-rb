@@ -5,7 +5,11 @@ class KclTestHelper
       dynamodb_endpoint: 'https://localhost:4566',
       dynamodb_table_name: 'kcl-rb-test',
       kinesis_endpoint: 'https://localhost:4566',
-      kinesis_stream_name: 'kcl-rb-test'
+      kinesis_stream_name: 'kcl-rb-test',
+      credentials: Aws::Credentials.new(
+        'dummy', 'dummy'
+      ),
+      use_ssl: false
     )
   end
 end

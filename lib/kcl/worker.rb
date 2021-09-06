@@ -159,7 +159,7 @@ module Kcl
         end
 
         # the shard has owner already
-        next if shard.lease_owner.present?
+        next if shard.lease_owner && !shard.lease_owner.empty?
 
         # shard is closed and processed all records
         next if shard.completed?

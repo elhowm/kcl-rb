@@ -4,7 +4,9 @@ RSpec.describe Kcl::Worker do
   include_context 'use_kinesis'
 
   let(:record_processor_factory) { double('record_processor_factory') }
-  let(:worker) { Kcl::Worker.new('test-worker', record_processor_factory) }
+  let(:worker) do
+    Kcl::Worker.new('test-worker', record_processor_factory, KclTestHelper.config)
+  end
 
   before do
     allow(record_processor_factory).to receive(:create_processor)
@@ -15,7 +17,7 @@ RSpec.describe Kcl::Worker do
     it { expect(subject.keys.size).to eq(5) }
   end
 
-  describe '#available_lease_shard?' do
+  xdescribe '#available_lease_shard?' do
     subject { worker.available_lease_shard? }
 
     context 'before consume' do
